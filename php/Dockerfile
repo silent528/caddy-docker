@@ -39,7 +39,8 @@ RUN apk add --no-cache \
   openssh-client \
   php7-fpm \
   tar \
-  tzdata
+  tzdata \
+  wget
 
 # Essential PHP Extensions
 RUN apk add --no-cache \
@@ -69,7 +70,15 @@ RUN apk add --no-cache \
   php7-xml \
   php7-xmlreader \
   php7-xmlwriter \
-  php7-zip
+  php7-zip \
+  php7-intl
+
+
+RUN mkdir redis \
+&& wget https://pecl.php.net/get/redis-5.1.1.tgz \
+&& tar -xf redis-5.1.1.tgz -C redis --strip-components=1 \
+&& ( cd redis && phpize && ./configure && make && make install ) \
+&& docker-php-ext-enable redis
 
 # Symlink php7 to php
 RUN ln -sf /usr/bin/php7 /usr/bin/php
