@@ -32,6 +32,10 @@ ENV ACME_AGREE="false"
 ENV ENABLE_TELEMETRY="$enable_telemetry"
 
 RUN apk add --no-cache \
+  --update \
+  autoconf \
+  g++ \
+  make \
   ca-certificates \
   curl \
   git \
@@ -41,6 +45,8 @@ RUN apk add --no-cache \
   tar \
   tzdata \
   wget
+
+RUN pecl install redis
 
 # Essential PHP Extensions
 RUN apk add --no-cache \
@@ -73,12 +79,7 @@ RUN apk add --no-cache \
   php7-zip \
   php7-intl
 
-
-RUN mkdir redis \
-&& wget https://pecl.php.net/get/redis-5.1.1.tgz \
-&& tar -xf redis-5.1.1.tgz -C redis --strip-components=1 \
-&& ( cd redis && phpize && ./configure && make && make install ) \
-&& docker-php-ext-enable redis
+RUN docker-php-ext-enable redis
 
 # Symlink php7 to php
 RUN ln -sf /usr/bin/php7 /usr/bin/php
