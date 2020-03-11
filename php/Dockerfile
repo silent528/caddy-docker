@@ -39,7 +39,8 @@ RUN apk add --no-cache \
   openssh-client \
   php7-fpm \
   tar \
-  tzdata
+  tzdata \
+  wget
 
 # Essential PHP Extensions
 RUN apk add --no-cache \
@@ -69,7 +70,13 @@ RUN apk add --no-cache \
   php7-xml \
   php7-xmlreader \
   php7-xmlwriter \
-  php7-zip
+  php7-zip \
+  php7-intl \
+  php7-redis \
+  php7-pcntl \
+  php7-posix
+
+
 
 # Symlink php7 to php
 RUN ln -sf /usr/bin/php7 /usr/bin/php
