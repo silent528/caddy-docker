@@ -31,8 +31,7 @@ ENV ACME_AGREE="false"
 # Telemetry Stats
 ENV ENABLE_TELEMETRY="$enable_telemetry"
 
-RUN apk update \
-  apk add --no-cache \
+RUN apk add --no-cache \
   ca-certificates \
   vim \
   curl \
