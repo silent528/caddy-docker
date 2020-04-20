@@ -33,6 +33,7 @@ ENV ENABLE_TELEMETRY="$enable_telemetry"
 
 RUN apk add --no-cache \
   ca-certificates \
+  vim \
   curl \
   git \
   mailcap \
@@ -72,7 +73,9 @@ RUN apk add --no-cache \
   php7-xmlwriter \
   php7-zip \
   php7-intl \
-  php7-redis
+  php7-redis \
+  php7-pcntl \
+  php7-posix
 
 
 
