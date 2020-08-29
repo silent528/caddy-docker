@@ -11,13 +11,15 @@ RUN apk add php-curl php-gd php-zip php-iconv php-sqlite3 php-mysql php-mysqli p
 # allow environment variable access.
 RUN echo "clear_env = no" >> /etc/php/php-fpm.conf
 
-RUN mkdir /caddysrc
-RUN curl -sL -o /caddysrc/caddy_linux_amd64.tar.gz "http://caddyserver.com/api/download?os=linux&arch=amd64&features=git"
-RUN tar -xf /caddysrc/caddy_linux_amd64.tar.gz -C /caddysrc
-RUN mv /caddysrc/caddy /usr/bin/caddy
-RUN chmod 755 /usr/bin/caddy
-RUN rm -rf /caddysrc
-RUN printf "0.0.0.0\nfastcgi / 127.0.0.1:9000 php\nbrowse\nstartup php-fpm" > /etc/Caddyfile
+ARG plugins=http.git,http.cache,http.expires,http.minify,http.realip
+
+RUN mkdir /caddysrc \
+&& curl -sL -o /caddysrc/caddy_linux_amd64.tar.gz "https://caddyserver.com/download/linux/arm64?plugins=${plugins}&license=personal&telemetry=off" \
+&& tar -xf /caddysrc/caddy_linux_amd64.tar.gz -C /caddysrc \
+&& mv /caddysrc/caddy /usr/bin/caddy \
+&& chmod 0755 /usr/bin/caddy \
+&& rm -rf /caddysrc \
+&& printf "0.0.0.0\nfastcgi / 127.0.0.1:9000 php\nbrowse\nstartup php-fpm" > /etc/Caddyfile
 
 RUN mkdir /srv \
 && printf "<?php phpinfo(); ?>" > /srv/index.php
