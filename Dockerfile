@@ -12,7 +12,7 @@ RUN apk add php-curl php-gd php-zip php-iconv php-sqlite3 php-mysql php-mysqli p
 RUN echo "clear_env = no" >> /etc/php/php-fpm.conf
 
 RUN mkdir /caddysrc
-RUN curl -sL -o /caddysrc/caddy_linux_amd64.tar.gz "http://caddyserver.com/download/build?os=linux&arch=amd64&features=git"
+RUN curl -sL -o /caddysrc/caddy_linux_amd64.tar.gz "http://caddyserver.com/api/download?os=linux&arch=amd64&features=git"
 RUN tar -xf /caddysrc/caddy_linux_amd64.tar.gz -C /caddysrc
 RUN mv /caddysrc/caddy /usr/bin/caddy
 RUN chmod 755 /usr/bin/caddy
