@@ -14,9 +14,9 @@ RUN echo "clear_env = no" >> /etc/php/php-fpm.conf
 ARG plugins=http.git,http.cache,http.expires,http.minify,http.realip
 
 RUN mkdir /caddysrc \
-&& curl -sL -o /caddysrc/caddy_linux_amd64.tar.gz "https://caddyserver.com/download/linux/arm64?plugins=${plugins}&license=personal&telemetry=off" \
-&& tar -xf /caddysrc/caddy_linux_amd64.tar.gz -C /caddysrc \
-&& mv /caddysrc/caddy /usr/bin/caddy \
+&& curl --silent --show-error --fail --location --header "Accept: application/tar+gzip, application/x-gzip, application/octet-stream" -o - \
+         "https://caddyserver.com/download/linux/arm64?plugins=${plugins}&license=personal&telemetry=off" \
+       | tar --no-same-owner -C /usr/bin/ -xz caddy \
 && chmod 0755 /usr/bin/caddy \
 && rm -rf /caddysrc \
 && printf "0.0.0.0\nfastcgi / 127.0.0.1:9000 php\nbrowse\nstartup php-fpm" > /etc/Caddyfile
